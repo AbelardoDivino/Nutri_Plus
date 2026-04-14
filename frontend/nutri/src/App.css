@@ -12,3 +12,26 @@ p{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px normal;
 }
+.divprincinpaldologin{
+  display:grid;
+  justify-content: center;
+  min-height: 90vh;
+  align-items: center;
+}
+
+#botoesparaentrar{
+  display: flex;
+  gap: 10px;
+}
+
+#entrar{
+  position: relative;
+  cursor: pointer;
+  top: -220px;
+}
+
+#admin{
+  position: relative;
+  cursor: pointer;
+  top: -220px;
+}
