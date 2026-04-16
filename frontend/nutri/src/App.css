@@ -20,11 +20,15 @@ p{
   width: auto;
 }
 
+#nava_sobre{
+  position: relative;
+  top: -10px;
+}
 
 .divprincinpaldologin{
   display:grid;
   justify-content: center;
-  min-height: 90vh;
+  min-height: 90px;
   align-items: center;
 }
 
@@ -36,11 +40,16 @@ p{
 #entrar{
   position: relative;
   cursor: pointer;
-  top: -220px;
 }
 
 #admin{
   position: relative;
   cursor: pointer;
-  top: -220px;
+}
+
+#footer{
+  display: grid;
+  position: relative;
+  top: 400px;
+  justify-content: center;
 }
