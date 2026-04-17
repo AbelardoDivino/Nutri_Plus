@@ -3,6 +3,16 @@
   margin: 0;
   box-sizing: border-box;
 }
+:root {
+  --primary: #2E7D32;      /* Verde escuro - natureza/saúde */
+  --secondary: #81C784;    /* Verde claro */
+  --accent: #FF8F00;      /* Laranja - destaque/ação */
+  --background: #F1F8E9;  /* Verde muito claro - fundo */
+  --text: #1B5E20;        /* Verde escuro - texto */
+  --white: #FFFFFF;
+  --dark: #1B5E20;
+}
+
 
 body{
   min-width: 100vh;
@@ -11,7 +21,7 @@ body{
 
 p{
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px normal;
+  font-size:  16px normal;
 }
 
 #fotologo{
@@ -20,9 +30,20 @@ p{
   width: auto;
 }
 
+/* .classenavbar{
+  
+} */
+
 #nava_sobre{
   position: relative;
-  top: -10px;
+  top: -40px;
+  right: 10px;
+}
+
+#nava_mais{
+ position: relative;
+  top: -40px;
+  right: -400px;
 }
 
 .divprincinpaldologin{
@@ -40,11 +61,30 @@ p{
 #entrar{
   position: relative;
   cursor: pointer;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
+#entrar:hover{
+  width: 100px;
+  color: red;
 }
 
 #admin{
   position: relative;
   cursor: pointer;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+#admin:hover{
+  width: 100px;
+  color: red;
 }
 
 #footer{

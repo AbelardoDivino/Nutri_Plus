@@ -1,0 +1,20 @@
+
+:root {
+  --primary: #2E7D32;      /* Verde escuro - natureza/saúde */
+  --secondary: #81C784;    /* Verde claro */
+  --accent: #FF8F00;      /* Laranja - destaque/ação */
+  --background: #F1F8E9;  /* Verde muito claro - fundo */
+  --text: #1B5E20;        /* Verde escuro - texto */
+  --white: #FFFFFF;
+  --dark: #1B5E20;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px normal;
+}
+
+.classenavbar{
+    height: 100px;
+    background-color: bisque;
+}
