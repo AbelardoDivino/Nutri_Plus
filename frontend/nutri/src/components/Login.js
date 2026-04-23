@@ -3,12 +3,28 @@ function Login({onLogin}){
     const [name,setName] = useState("")
     const [senha,setSenha] = useState("")
 
-    function handlelogin(tipo){
-        if (senha.length >=8) {
-            onLogin(tipo)
+    async function handlelogin(tipo) {
+        if (senha.length < 8) {
+            alert("Senha inválida mínimo 8 caracteres")
+            return
         }
-        else{
-            alert("Senha invalida minimo 8 caracters")
+
+        try {
+            const resposta = await fetch('http://localhost:3001/api/usuario/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: name, senha: senha })
+            })
+            
+            const dados = await resposta.json()
+            
+            if (dados.sucesso) {
+                onLogin(tipo)
+            } else {
+                alert(dados.erro || "Credenciais inválidas")
+            }
+        } catch (erro) {
+            alert("Erro ao conectar com o servidor")
         }
     }
 

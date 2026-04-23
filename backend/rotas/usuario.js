@@ -1,29 +1,20 @@
-import { useState } from "react"
+const express = require('express')
+const router = express.Router()
+const db = require('../db/db')
 
+router.post('/login', (req, resp) => {
+    const { nome, senha } = req.body
+    
+    const sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?"
+    db.query(sql, [nome, senha], (err, results) => {
+        if (err) {
+            resp.json({ erro: err.message })
+        } else if (results.length > 0) {
+            resp.json({ sucesso: true, usuario: results[0] })
+        } else {
+            resp.json({ sucesso: false, erro: "Credenciais inválidas" })
+        }
+    })
+})
 
-function perguntas(){
-
-    const perguntas = ['fazatividades','fazdieta','quantidadedecalorias','oquedesejasertipoperderpeso meter o chape etc']
-
-}
-// dcd ao carregar o capo usuario deve ter estas perguntas e depois encaminhalo para mandar msg no whatsap instagram e emaill
-function Usuario(){
-    return(
-        <div>
-            <div className="camponome">
-                <label>Nome:</label>
-                <input type="text"></input>
-            </div>
-            <div className="campopeso">
-                <label>Peso:</label>
-                <input type="number"></input>
-            </div>
-            <div className="capmpoperguntas">
-        {/* adcascddv */}
-            </div>
-        </div>
-    )
-}
-
-
-export default Usuário
+module.exports = router
