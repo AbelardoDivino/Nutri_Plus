@@ -47,7 +47,11 @@ function Login({onLogin}){
             </label>
             <div id="botoesparaentrar">
             <button id="entrar" onClick={()=> handlelogin('usuario')}>Entrar</button> 
-            <button id="admin" onClick={()=> handlelogin('admin')}> Admin</button>       
+
+            <button id="admin" onClick={()=> handlelogin('admin')}> Admin</button>  
+
+            <button id="cadastrar" onClick={()=> headcadastrar ('cadastrar')}>Cadastrar</button>
+
          </div>
         </div>
         
