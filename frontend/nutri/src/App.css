@@ -72,6 +72,19 @@ p{
   color: red;
 }
 
+#cadastrar{
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  border:none;
+  background-color: var(--primary);
+}
+
+#cadastrar:hover{
+  width: 100px;
+  color: red;
+}
+
 #admin{
   position: relative;
   cursor: pointer;
