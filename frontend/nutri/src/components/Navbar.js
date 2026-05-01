@@ -4,7 +4,8 @@ function Navbar(){
             <img src='/imagens/imagenlogo.png' alt="logo" id="fotologo"></img>
             <a  href="#" id="nava_sobre">sobre</a>
             <a href="#" id="nava_mais">mais</a>
-        </div>
+            <a href="#" id="nava_entrar"> Entrar</a>
+            </div>
     )
 }
 

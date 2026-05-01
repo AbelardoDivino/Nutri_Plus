@@ -18,3 +18,8 @@ body{
     height: 100px;
     background-color: bisque;
 }
+
+.divprincinpaldologin{
+    display: grid;
+    top: -50%;
+}

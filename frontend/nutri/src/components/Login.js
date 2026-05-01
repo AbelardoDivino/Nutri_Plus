@@ -1,3 +1,4 @@
+import {Link} from  'react-router-dom'
 import { useState } from "react"
 function Login({onLogin}){
     const [name,setName] = useState("")
@@ -46,7 +47,7 @@ function Login({onLogin}){
                 </label>
             </label>
             <div id="botoesparaentrar">
-            <button id="entrar" onClick={()=> handlelogin('usuario')}>Entrar</button> 
+           
 
             <button id="admin" onClick={()=> handlelogin('admin')}> Admin</button>  
 

@@ -42,11 +42,27 @@ p{
 
 #nava_mais{
  position: relative;
-  top: -40px;
-  right: -400px;
+ top: -40px;
+ right: -400px;
+}
+#nava_entrar{
+ position: relative;
+ top: -40px;
+ right: -400px;
+}
+
+a{
+  color: black;
+  text-decoration: none;
+}
+
+a:hover{
+    width: 100px;
+  color: red;
 }
 
 .divprincinpaldologin{
+  top: 50%;
   display:grid;
   justify-content: center;
   min-height: 90px;
