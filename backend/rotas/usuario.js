@@ -17,4 +17,26 @@ router.post('/login', (req, resp) => {
     })
 })
 
+router.post('/cadastro', (req, resp) => {
+    const { nome, senha, email, telefone } = req.body
+    
+    if (!nome || !senha || !email) {
+        resp.json({ sucesso: false, erro: "Preencha todos os campos obrigatórios" })
+        return
+    }
+
+    const sql = "INSERT INTO usuarios (nome, senha, email, telefone) VALUES (?, ?, ?, ?)"
+    db.query(sql, [nome, senha, email, telefone], (err, result) => {
+        if (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+                resp.json({ sucesso: false, erro: "Nome ou email já cadastrado" })
+            } else {
+                resp.json({ sucesso: false, erro: err.message })
+            }
+        } else {
+            resp.json({ sucesso: true, id: result.insertId })
+        }
+    })
+})
+
 module.exports = router

@@ -1,6 +1,6 @@
 import {Link} from  'react-router-dom'
 import { useState } from "react"
-function Login({onLogin}){
+function Login({onLogin, onCadastrar}){
     const [name,setName] = useState("")
     const [senha,setSenha] = useState("")
 
@@ -47,12 +47,9 @@ function Login({onLogin}){
                 </label>
             </label>
             <div id="botoesparaentrar">
-           
-
+            <button id="entrar" onClick={()=> handlelogin('usuario')}>Entrar</button> 
             <button id="admin" onClick={()=> handlelogin('admin')}> Admin</button>  
-
-            <button id="cadastrar" onClick={()=> headcadastrar ('cadastrar')}>Cadastrar</button>
-
+            <button id="cadastrar" onClick={onCadastrar}>Cadastrar</button>       
          </div>
         </div>
         
