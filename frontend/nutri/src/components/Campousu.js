@@ -12,10 +12,14 @@ function Campousu(){
         Tera area de peso basal 
         aba de
 
+        
+
         */}
 
+<p>Ola seja bem Vindo ao nutri plus</p>
+
         {/* 
-        tera a aba do que terar de comer e fazer no dia a dia
+        tera a aba do que terar de comer e fazer no dia a dia 
         */}
 
         </div>

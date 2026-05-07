@@ -1,11 +1,13 @@
 import { useState } from "react"
 
-function Cadastrar({onVoltar}){
+function Cadastrar({onVoltar, onCadastrado}){
     const [nome, setNome] = useState("")
     const [senha, setSenha] = useState("")
     const [confirmarSenha, setConfirmarSenha] = useState("")
     const [email, setEmail] = useState("")
     const [telefone, setTelefone] = useState("")
+    const [mostrarSenha, setMostrarSenha] = useState(false)
+    const [mostrarConfirmar, setMostrarConfirmar] = useState(false)
 
     async function handleCadastro() {
         if (nome.length < 10 || nome.length > 40) {
@@ -36,7 +38,7 @@ function Cadastrar({onVoltar}){
             
             if (dados.sucesso) {
                 alert("Cadastro realizado com sucesso!")
-                onVoltar()
+                onCadastrado()
             } else {
                 alert(dados.erro || "Erro no cadastro")
             }
@@ -54,8 +56,14 @@ function Cadastrar({onVoltar}){
 
             <div>
                 <label>Senha:</label>
-                <input type="password" minLength={12} maxLength={60} placeholder="min 12 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
-                <input type="password" minLength={12} maxLength={60} placeholder="digite a senha novamente" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)}></input>
+                <div style={{display:'flex', alignItems:'center', gap:'5px'}}>
+                    <input type={mostrarSenha ? "text" : "password"} minLength={12} maxLength={60} placeholder="min 12 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
+                    <span onClick={() => setMostrarSenha(!mostrarSenha)} style={{cursor:'pointer'}}>{mostrarSenha ? '🙈' : '👁️'}</span>
+                </div>
+                <div style={{display:'flex', alignItems:'center', gap:'5px'}}>
+                    <input type={mostrarConfirmar ? "text" : "password"} minLength={12} maxLength={60} placeholder="digite a senha novamente" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)}></input>
+                    <span onClick={() => setMostrarConfirmar(!mostrarConfirmar)} style={{cursor:'pointer'}}>{mostrarConfirmar ? '🙈' : '👁️'}</span>
+                </div>
             </div>
 
             <div>

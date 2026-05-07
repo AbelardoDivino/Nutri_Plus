@@ -3,6 +3,7 @@ import { useState } from "react"
 function Login({onLogin, onCadastrar}){
     const [name,setName] = useState("")
     const [senha,setSenha] = useState("")
+    const [mostrarSenha, setMostrarSenha] = useState(false)
 
     async function handlelogin(tipo) {
         if (senha.length < 8) {
@@ -39,10 +40,13 @@ function Login({onLogin, onCadastrar}){
                 </div>
                 <label> Senha
                 <div>
-                    <input type="password"placeholder="min 8 caracters"
+                    <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracters"
                     value={senha}
                     onChange={(e)=> setSenha(e.target.value)}
                     ></input>
+                    <span onClick={() => setMostrarSenha(!mostrarSenha)} style={{cursor:'pointer'}}>
+                        {mostrarSenha ? '🙈' : '👁️'}
+                    </span>
                 </div>
                 </label>
             </label>

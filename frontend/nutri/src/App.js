@@ -14,8 +14,8 @@ function App() {
       <header className="App-header">
         <Navbar>  </Navbar>
       </header>
-      {tela === 'login' && <Login onCadastrar={() => setTela('cadastrar')} />}
-      {tela === 'cadastrar' && <Cadastrar onVoltar={() => setTela('login')} />}
+      {tela === 'login' && <Login onLogin={(tipo) => setTela(tipo)} onCadastrar={() => setTela('cadastrar')} />}
+      {tela === 'cadastrar' && <Cadastrar onVoltar={() => setTela('login')} onCadastrado={() => setTela('usuario')} />}
       {tela === 'usuario' && <Campousu />}
       {tela === 'admin' && <Admin />}
       <Footer></Footer>
