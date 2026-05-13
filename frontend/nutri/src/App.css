@@ -30,14 +30,38 @@ p{
   width: auto;
 }
 
-/* .classenavbar{
-  
-} */
+.classenavbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
-#nava_sobre{
+#nava_mais{
+  cursor: pointer;
+}
+#nava_entrar{
+  cursor: pointer;
+}
+
+.password-container {
   position: relative;
-  top: -40px;
+  display: inline-block;
+}
+
+.password-container input {
+  padding-right: 35px;
+}
+
+.toggle-password {
+  position: absolute;
   right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
 }
 
 #nava_mais{
@@ -114,7 +138,25 @@ a:hover{
 #admin:hover{
   width: 100px;
   color: red;
+  cursor: pointer;
 }
+
+#recuperarsenha{
+  position: relative;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+#recuperarsenha:hover{
+    width: 100px;
+  color: red;
+  cursor: pointer;
+}
+
 
 #footer{
   display: grid;

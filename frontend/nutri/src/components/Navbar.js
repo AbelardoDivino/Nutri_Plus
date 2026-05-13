@@ -1,12 +1,11 @@
-import App from '../App'
-function Navbar(){
+function Navbar({onSobre}){
     return(
         <div className="classenavbar">
-            <a href="App"><img src='/imagens/imagenlogo.png' alt="logo" id="fotologo"></img></a>
-            <a  href="#" id="nava_sobre">sobre</a>
+            <img src='/imagens/imagenlogo.png' alt="logo" id="fotologo"></img>
+            <a onClick={onSobre} style={{cursor:'pointer'}}>sobre</a>
             <a href="#" id="nava_mais">mais</a>
-            <a href="#" id="nava_entrar"> Entrar</a>
-            </div>
+            <a href="#" id="nava_entrar">Entrar</a>
+        </div>
     )
 }
 

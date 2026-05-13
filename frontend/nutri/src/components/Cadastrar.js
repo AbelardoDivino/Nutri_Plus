@@ -56,13 +56,13 @@ function Cadastrar({onVoltar, onCadastrado}){
 
             <div>
                 <label>Senha:</label>
-                <div style={{display:'flex', alignItems:'center', gap:'5px'}}>
+                <div className="password-container">
                     <input type={mostrarSenha ? "text" : "password"} minLength={12} maxLength={60} placeholder="min 12 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
-                    <span onClick={() => setMostrarSenha(!mostrarSenha)} style={{cursor:'pointer'}}>{mostrarSenha ? '🙈' : '👁️'}</span>
+                    <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>{mostrarSenha ? '🙈' : '👁️'}</span>
                 </div>
-                <div style={{display:'flex', alignItems:'center', gap:'5px'}}>
+                <div className="password-container">
                     <input type={mostrarConfirmar ? "text" : "password"} minLength={12} maxLength={60} placeholder="digite a senha novamente" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)}></input>
-                    <span onClick={() => setMostrarConfirmar(!mostrarConfirmar)} style={{cursor:'pointer'}}>{mostrarConfirmar ? '🙈' : '👁️'}</span>
+                    <span className="toggle-password" onClick={() => setMostrarConfirmar(!mostrarConfirmar)}>{mostrarConfirmar ? '🙈' : '👁️'}</span>
                 </div>
             </div>
 

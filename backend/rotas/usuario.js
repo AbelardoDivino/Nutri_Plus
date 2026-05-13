@@ -39,4 +39,28 @@ router.post('/cadastro', (req, resp) => {
     })
 })
 
+router.post('/recuperar-senha', (req, resp) => {
+    const { email, senha } = req.body
+
+    if (!email || !email.includes('@')) {
+        resp.json({ sucesso: false, erro: "Email inválido" })
+        return
+    }
+    if (!senha || senha.length < 8) {
+        resp.json({ sucesso: false, erro: "Senha deve ter no mínimo 8 caracteres" })
+        return
+    }
+
+    const sql = "UPDATE usuarios SET senha = ? WHERE email = ?"
+    db.query(sql, [senha, email], (err, result) => {
+        if (err) {
+            resp.json({ sucesso: false, erro: err.message })
+        } else if (result.affectedRows === 0) {
+            resp.json({ sucesso: false, erro: "Email não encontrado" })
+        } else {
+            resp.json({ sucesso: true, mensagem: "Senha alterada com sucesso!" })
+        }
+    })
+})
+
 module.exports = router

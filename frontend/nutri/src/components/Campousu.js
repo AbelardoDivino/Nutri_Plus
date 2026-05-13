@@ -12,6 +12,8 @@ function Campousu(){
         Tera area de peso basal 
         aba de
 
+        peso altura objetivo
+
         
 
         */}

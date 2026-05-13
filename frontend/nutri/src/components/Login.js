@@ -1,6 +1,6 @@
 import {Link} from  'react-router-dom'
 import { useState } from "react"
-function Login({onLogin, onCadastrar}){
+function Login({onLogin, onCadastrar, onRecuperarsenha}){
     const [name,setName] = useState("")
     const [senha,setSenha] = useState("")
     const [mostrarSenha, setMostrarSenha] = useState(false)
@@ -39,12 +39,12 @@ function Login({onLogin, onCadastrar}){
                     ></input>
                 </div>
                 <label> Senha
-                <div>
-                    <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracters"
+                <div className="password-container">
+                    <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracteres"
                     value={senha}
                     onChange={(e)=> setSenha(e.target.value)}
                     ></input>
-                    <span onClick={() => setMostrarSenha(!mostrarSenha)} style={{cursor:'pointer'}}>
+                    <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>
                         {mostrarSenha ? '🙈' : '👁️'}
                     </span>
                 </div>
@@ -53,7 +53,8 @@ function Login({onLogin, onCadastrar}){
             <div id="botoesparaentrar">
             <button id="entrar" onClick={()=> handlelogin('usuario')}>Entrar</button> 
             <button id="admin" onClick={()=> handlelogin('admin')}> Admin</button>  
-            <button id="cadastrar" onClick={onCadastrar}>Cadastrar</button>       
+            <button id="cadastrar" onClick={onCadastrar}>Cadastrar</button> 
+            <button id='recuperarsenha' onClick={onRecuperarsenha}>Esqueceu a Senha</button>      
          </div>
         </div>
         
