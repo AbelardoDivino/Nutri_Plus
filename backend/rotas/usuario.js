@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../db/db')
+const mail = require('nodemailer')
 
 router.post('/login', (req, resp) => {
     const { nome, senha } = req.body
@@ -18,15 +19,27 @@ router.post('/login', (req, resp) => {
 })
 
 router.post('/cadastro', (req, resp) => {
-    const { nome, senha, email, telefone } = req.body
-    
+    const { nome, senha, email, telefone, altura, genero, sedentario } = req.body
+
     if (!nome || !senha || !email) {
         resp.json({ sucesso: false, erro: "Preencha todos os campos obrigatórios" })
         return
     }
+    if (!altura || !genero || !sedentario) {
+        resp.json({ sucesso: false, erro: "Preencha altura, gênero e sedentário" })
+        return
+    }
+    if (!['Masculino', 'Feminino'].includes(genero)) {
+        resp.json({ sucesso: false, erro: "Gênero inválido" })
+        return
+    }
+    if (!['Sim', 'Nao'].includes(sedentario)) {
+        resp.json({ sucesso: false, erro: "Valor de sedentário inválido" })
+        return
+    }
 
-    const sql = "INSERT INTO usuarios (nome, senha, email, telefone) VALUES (?, ?, ?, ?)"
-    db.query(sql, [nome, senha, email, telefone], (err, result) => {
+    const sql = "INSERT INTO usuarios (nome, senha, email, telefone, altura, genero, sedentario) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    db.query(sql, [nome, senha, email, telefone, altura, genero, sedentario], (err, result) => {
         if (err) {
             if (err.code === 'ER_DUP_ENTRY') {
                 resp.json({ sucesso: false, erro: "Nome ou email já cadastrado" })

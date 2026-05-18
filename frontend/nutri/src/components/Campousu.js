@@ -1,38 +1,10 @@
-import styles from '../components/css/Campuusu.module.css'
-import { useState } from "react"
-import Caloriasdiarias from './pages/Caloriasdiarias'
-import Pesobasal from './pages/Pesobasal'
-function Campousu(){
-    return(
-        <div>
-
-
-        {/* {let peso =  Number(alert("digite seu peso:"))} */}
-
-        {/* 
-        
-        Tera area de peso basal 
-        aba de
-
-        peso altura objetivo
-
-        
-
-        */}
-
-<p>Ola seja bem Vindo ao nutri plus</p>
-
-        {/* 
-        tera a aba do que terar de comer e fazer no dia a dia 
-        */}
-
-{/* com o resultado do peso basal sera redirecionado no whatsap com os dados da biopedancia/ imdb para melhor resultado */}
-
-<Pesobasal></Pesobasal>
-
-
-        </div>
-    )
+function Campousu() {
+  return (
+    <div className="form-card welcome-card">
+      <h2>Bem-vindo ao Nutri+</h2>
+      <p>Olá! Sua área personalizada estará disponível em breve.</p>
+    </div>
+  );
 }
 
-export default Campousu
+export default Campousu;
