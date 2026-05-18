@@ -1,7 +1,7 @@
 function Caloriasdiarias(){
     return(
         <div>
-            <input type="number" placeholder="Digite seu peso"></input>
+            <input type="number" placeholder="Digite seu peso" />
         </div>
     )
 }

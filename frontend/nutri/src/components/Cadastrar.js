@@ -51,29 +51,29 @@ function Cadastrar({onVoltar, onCadastrado}){
         <div className="cadastrarnoapp">
             <div>
                 <label>Nome:</label>
-                <input type="text" minLength={10} maxLength={40} placeholder="digite seu nome" value={nome} onChange={(e) => setNome(e.target.value)}></input>
+                <input type="text" minLength={10} maxLength={40} placeholder="digite seu nome" value={nome} onChange={(e) => setNome(e.target.value)} />
             </div>
 
             <div>
                 <label>Senha:</label>
                 <div className="password-container">
-                    <input type={mostrarSenha ? "text" : "password"} minLength={12} maxLength={60} placeholder="min 12 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
+                    <input type={mostrarSenha ? "text" : "password"} minLength={12} maxLength={60} placeholder="min 12 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)} />
                     <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>{mostrarSenha ? '🙈' : '👁️'}</span>
                 </div>
                 <div className="password-container">
-                    <input type={mostrarConfirmar ? "text" : "password"} minLength={12} maxLength={60} placeholder="digite a senha novamente" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)}></input>
+                    <input type={mostrarConfirmar ? "text" : "password"} minLength={12} maxLength={60} placeholder="digite a senha novamente" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} />
                     <span className="toggle-password" onClick={() => setMostrarConfirmar(!mostrarConfirmar)}>{mostrarConfirmar ? '🙈' : '👁️'}</span>
                 </div>
             </div>
 
             <div>
                 <label>Email:</label>
-                <input type="email" placeholder="email@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                <input type="email" placeholder="email@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
 
             <div>
                 <label>Telefone:</label>
-                <input type="tel" placeholder="99-99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)}></input>
+                <input type="tel" placeholder="99-99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
             </div>
 
             <button onClick={handleCadastro}>Cadastrar</button>

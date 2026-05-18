@@ -44,12 +44,12 @@ function Esqueceuasenha({onVoltar}){
             <h1>Recuperar Senha</h1>
             <div>
                 <label>Email:</label>
-                <input type="email" placeholder="seuemail@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                <input type="email" placeholder="seuemail@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div>
                 <label>Nova Senha:</label>
                 <div className="password-container">
-                    <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)}></input>
+                    <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracteres" value={senha} onChange={(e) => setSenha(e.target.value)} />
                     <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>
                         {mostrarSenha ? '🙈' : '👁️'}
                     </span>
@@ -58,7 +58,7 @@ function Esqueceuasenha({onVoltar}){
             <div>
                 <label>Confirmar Nova Senha:</label>
                 <div className="password-container">
-                    <input type={mostrarConfirmar ? "text" : "password"} placeholder="repita a senha" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)}></input>
+                    <input type={mostrarConfirmar ? "text" : "password"} placeholder="repita a senha" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} />
                     <span className="toggle-password" onClick={() => setMostrarConfirmar(!mostrarConfirmar)}>
                         {mostrarConfirmar ? '🙈' : '👁️'}
                     </span>

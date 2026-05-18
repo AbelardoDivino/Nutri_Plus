@@ -36,14 +36,14 @@ function Login({onLogin, onCadastrar, onRecuperarsenha}){
                 <div>
                     <input type="text" placeholder="Digite seu nome" minLength={8} maxLength={40} value={name} 
                     onChange={(e)=>setName(e.target.value)}
-                    ></input>
+                     />
                 </div>
                 <label> Senha
                 <div className="password-container">
                     <input type={mostrarSenha ? "text" : "password"} placeholder="min 8 caracteres"
                     value={senha}
                     onChange={(e)=> setSenha(e.target.value)}
-                    ></input>
+                     />
                     <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>
                         {mostrarSenha ? '🙈' : '👁️'}
                     </span>

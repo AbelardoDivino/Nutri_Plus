@@ -2,15 +2,27 @@ function Pesobasal(){
     return(
         <div>
             {/* calcular peso basal */}
-            <input type="text" placeholder="Digite o seu nome" minLength={10} maxLength={40}></input>
+            <input type="text" placeholder="Digite o seu nome" minLength={10} maxLength={40} />
 
-            <input type="number"placeholder="Peso KG"> </input>
+            <input type="number" placeholder="Peso KG" />
 
-            <input type="number" placeholder="Altura CM"></input>
+            <input type="number" placeholder="Altura CM" />
 
-            <input type="radio">Genero</input>
+            <label>
+               Genero
+               <select>
+                <option value='M'>Masculino</option>
+                <option value='F'>Feminino</option>
+               </select>
+            </label>
 
-            <input type="option">Sedentario(s)/(n)</input>
+            <label>
+                Sedentario(S)/(N)
+                <select>
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
 
         </div>
     )
