@@ -21,7 +21,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
       const dados = await resposta.json();
 
       if (dados.sucesso) {
-        onLogin(tipo);
+        onLogin(tipo, dados.usuario);
       } else {
         alert(dados.erro || "Credenciais inválidas");
       }
@@ -75,7 +75,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
           Entrar
         </button>
         <button type="button" className="btn btn-accent" onClick={() => handlelogin("admin")}>
-          Admin
+          Profissional
         </button>
         <button type="button" className="btn btn-secondary" onClick={onCadastrar}>
           Cadastrar

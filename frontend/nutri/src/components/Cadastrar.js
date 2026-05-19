@@ -55,6 +55,8 @@ function Cadastrar({ onVoltar, onCadastrado }) {
           altura: alturaMetros,
           genero,
           sedentario,
+          peso: Number(peso),
+          idade: 30,
         }),
       });
 

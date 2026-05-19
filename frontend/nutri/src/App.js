@@ -11,6 +11,12 @@ import { useState } from 'react';
 
 function App() {
   const [tela, setTela] = useState('login');
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+
+  function handleLogin(tipo, usuario) {
+    setUsuarioLogado(usuario || null);
+    setTela(tipo);
+  }
 
   return (
     <div className="App">
@@ -21,7 +27,7 @@ function App() {
       <main className="app-main">
         {tela === 'login' && (
           <Login
-            onLogin={(tipo) => setTela(tipo)}
+            onLogin={handleLogin}
             onCadastrar={() => setTela('cadastrar')}
             onRecuperarsenha={() => setTela('esqueceuasenha')}
           />
@@ -32,8 +38,8 @@ function App() {
             onCadastrado={() => setTela('usuario')}
           />
         )}
-        {tela === 'usuario' && <Campousu />}
-        {tela === 'admin' && <Admin />}
+        {tela === 'usuario' && <Campousu usuario={usuarioLogado} />}
+        {tela === 'admin' && <Admin onVoltar={() => setTela('login')} />}
         {tela === 'esqueceuasenha' && (
           <Esqueceuasenha onVoltar={() => setTela('login')} />
         )}

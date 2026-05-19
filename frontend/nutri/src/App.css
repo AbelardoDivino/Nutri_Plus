@@ -400,3 +400,226 @@ body {
   color: var(--accent);
   transform: scale(1.1);
 }
+
+/* Admin */
+.admin-panel {
+  max-width: 960px;
+}
+
+.admin-erro {
+  background: #ffebee;
+  color: #c62828;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-lista h3,
+.admin-detalhe h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.admin-usuarios {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.admin-user-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem;
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  background: var(--background);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.admin-user-btn:hover,
+.admin-user-btn.ativo {
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.admin-user-btn span {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.admin-user-btn small {
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.admin-placeholder {
+  opacity: 0.8;
+  padding: 1rem 0;
+}
+
+.admin-dados {
+  background: var(--background);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.admin-dados p {
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.admin-basal {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--secondary);
+}
+
+.admin-form-dieta textarea {
+  width: 100%;
+  padding: 0.65rem;
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.admin-form-dieta .form-group input[type="number"] {
+  margin-top: 0.35rem;
+}
+
+/* Dieta do usuário */
+.refeicoes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 600px) {
+  .refeicoes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.refeicao-card {
+  background: var(--background);
+  border: 2px solid var(--secondary);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.refeicao-card h3 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.refeicao-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.refeicao-card small {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.taco-auxiliar {
+  background: var(--background);
+  border: 2px dashed var(--secondary);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.taco-busca {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.taco-busca input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+}
+
+.taco-resultados {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.taco-resultados li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--white);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.taco-add-btns {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.btn-mini {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--primary);
+  background: var(--white);
+  color: var(--primary);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-mini:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.admin-total-ref {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: var(--background);
+  border-radius: 6px;
+}
+
+.admin-basal small {
+  display: block;
+  margin-top: 0.35rem;
+  opacity: 0.85;
+  font-size: 0.8rem;
+}

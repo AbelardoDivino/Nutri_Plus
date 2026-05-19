@@ -18,13 +18,14 @@
 const express = require('express')
 const cors = require('cors')
 const rotasUsuario = require('./rotas/usuario')
+const rotasAdmin = require('./rotas/admin')
 
 const app = express()
-const db = require('./db/db')
 
 app.use(cors())
 app.use(express.json())
 app.use('/api/usuario', rotasUsuario)
+app.use('/api/admin', rotasAdmin)
 
 app.get('/', (req, resp) => {
     resp.send('API rodando')
