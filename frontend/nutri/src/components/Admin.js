@@ -9,6 +9,8 @@ function Admin({ onVoltar }) {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [salvando, setSalvando] = useState(false);
+  const [notificar, setNotificar] = useState(true);
+  const [sugerindo, setSugerindo] = useState(false);
 
   const [buscaTaco, setBuscaTaco] = useState("");
   const [alimentosTaco, setAlimentosTaco] = useState([]);
@@ -95,6 +97,33 @@ function Admin({ onVoltar }) {
     }
   }
 
+  async function sugerirDieta() {
+    if (!selecionado) return;
+    setSugerindo(true);
+    setErro("");
+    try {
+      const res = await fetch(`${API}/sugerir-dieta/${selecionado}`);
+      const dados = await res.json();
+      if (dados.sucesso) {
+        const s = dados.sugestao;
+        setFormDieta({
+          cafe: s.cafe.texto,
+          almoco: s.almoco.texto,
+          janta: s.janta.texto,
+          cafe_calorias: s.cafe.calorias,
+          almoco_calorias: s.almoco.calorias,
+          janta_calorias: s.janta.calorias,
+        });
+      } else {
+        setErro(dados.erro || "Erro ao sugerir dieta");
+      }
+    } catch {
+      setErro("Erro ao gerar sugestão automática");
+    } finally {
+      setSugerindo(false);
+    }
+  }
+
   function adicionarAlimentoNaRefeicao(refeicao, alimento) {
     const linha = `${alimento.nome} — ${alimento.kcal} kcal/${alimento.porcao}`;
     setFormDieta((prev) => ({
@@ -119,6 +148,7 @@ function Admin({ onVoltar }) {
           cafe_calorias: Number(formDieta.cafe_calorias) || 0,
           almoco_calorias: Number(formDieta.almoco_calorias) || 0,
           janta_calorias: Number(formDieta.janta_calorias) || 0,
+          notificar,
         }),
       });
       const dados = await res.json();
@@ -289,6 +319,17 @@ function Admin({ onVoltar }) {
                   )}
                 </p>
 
+                <div className="form-actions" style={{ marginBottom: 16 }}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    disabled={sugerindo}
+                    onClick={sugerirDieta}
+                  >
+                    {sugerindo ? "Gerando sugestão..." : "Sugerir dieta automática (baseada na TMB)"}
+                  </button>
+                </div>
+
                 <div className="form-group">
                   <label>Café da manhã</label>
                   <textarea
@@ -341,6 +382,17 @@ function Admin({ onVoltar }) {
                       setFormDieta({ ...formDieta, janta_calorias: e.target.value })
                     }
                   />
+                </div>
+
+                <div className="form-group" style={{ marginTop: 16 }}>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificar}
+                      onChange={(e) => setNotificar(e.target.checked)}
+                    />
+                    {" "}Notificar o paciente por e-mail
+                  </label>
                 </div>
 
                 <div className="form-actions">

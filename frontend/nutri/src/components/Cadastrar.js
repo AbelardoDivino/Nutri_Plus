@@ -10,6 +10,7 @@ function Cadastrar({ onVoltar, onCadastrado }) {
   const [peso, setPeso] = useState("");
   const [altura, setAltura] = useState("");
   const [genero, setGenero] = useState("Masculino");
+  const [idade, setIdade] = useState("");
   const [sedentario, setSedentario] = useState("Sim");
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
@@ -40,6 +41,10 @@ function Cadastrar({ onVoltar, onCadastrado }) {
       alert("Altura deve estar entre 50 e 250 cm");
       return;
     }
+    if (!idade || idade < 1 || idade > 120) {
+      alert("Idade deve estar entre 1 e 120 anos");
+      return;
+    }
 
     const alturaMetros = Number((alturaCm / 100).toFixed(2));
 
@@ -56,7 +61,7 @@ function Cadastrar({ onVoltar, onCadastrado }) {
           genero,
           sedentario,
           peso: Number(peso),
-          idade: 30,
+          idade: Number(idade),
         }),
       });
 
@@ -163,6 +168,19 @@ function Cadastrar({ onVoltar, onCadastrado }) {
           placeholder="99-99999-9999"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="cad-idade">Idade</label>
+        <input
+          id="cad-idade"
+          type="number"
+          min={1}
+          max={120}
+          placeholder="Ex: 25"
+          value={idade}
+          onChange={(e) => setIdade(e.target.value)}
         />
       </div>
 

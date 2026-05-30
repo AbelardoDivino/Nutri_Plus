@@ -54,7 +54,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
           <input
             id="login-senha"
             type={mostrarSenha ? "text" : "password"}
-            placeholder="Mínimo 8 caracteres"
+            placeholder="Mínimo 12 caracteres"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />

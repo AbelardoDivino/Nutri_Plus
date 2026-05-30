@@ -7,15 +7,17 @@
 }
 
 :root {
-  --primary: #2e7d32;
-  --secondary: #81c784;
-  --accent: #ff8f00;
-  --background: #f1f8e9;
-  --text: #1b5e20;
-  --white: #ffffff;
-  --dark: #1b5e20;
-  --navbar-bg: #ffe0b2;
-  --card-shadow: 0 8px 24px rgba(27, 94, 32, 0.12);
+  --primary: #00C853;
+  --primary-dark: #009624;
+  --secondary: #69F0AE;
+  --accent: #FF6D00;
+  --accent-light: #FF8F00;
+  --background: #E8F5E9;
+  --text: #1B5E20;
+  --white: #FFFFFF;
+  --dark: #004D40;
+  --navbar-bg: #FFF3E0;
+  --card-shadow: 0 8px 32px rgba(0, 200, 83, 0.18);
   --radius: 12px;
   --max-width: 520px;
 }
@@ -25,7 +27,7 @@ body {
   font-family: "Segoe UI", Arial, Helvetica, sans-serif;
   font-size: 16px;
   color: var(--text);
-  background: linear-gradient(160deg, var(--background) 0%, #c8e6c9 45%, #a5d6a7 100%);
+  background: linear-gradient(160deg, #E8F5E9 0%, #C8E6C9 35%, #A5D6A7 70%, #81C784 100%);
 }
 
 .App {
@@ -252,17 +254,18 @@ body {
 .btn {
   cursor: pointer;
   font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.7rem 1.25rem;
+  font-weight: 700;
+  padding: 0.75rem 1.35rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
   width: 100%;
+  letter-spacing: 0.3px;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(27, 94, 32, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
 }
 
 .btn:active {
@@ -270,31 +273,32 @@ body {
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: var(--white);
 }
 
 .btn-primary:hover {
-  background: var(--dark);
+  background: linear-gradient(135deg, var(--primary-dark) 0%, #007D2F 100%);
 }
 
 .btn-secondary {
   background: var(--white);
-  color: var(--primary);
+  color: var(--primary-dark);
   border: 2px solid var(--primary);
 }
 
 .btn-secondary:hover {
   background: var(--background);
+  border-color: var(--primary-dark);
 }
 
 .btn-accent {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, #E65100 100%);
   color: var(--white);
 }
 
 .btn-accent:hover {
-  background: #e65100;
+  background: linear-gradient(135deg, #E65100 0%, #BF360C 100%);
 }
 
 .form-actions--row .btn {

@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/db');
 const { calcularTaxaBasal } = require('../services/calcularBasal');
-const { buscarAlimentosParaConsulta } = require('../services/taco');
+const { buscarAlimentosParaConsulta, montarRefeicao, MAPA_REFEICAO } = require('../services/taco');
+const { enviarDietaPorEmail } = require('../services/email');
 
 const CAMPOS_USUARIO = `
   id, nome, email, telefone, altura, genero, sedentario,
-  peso, idade, taxa_basal
+  peso, idade
 `;
 
 function query(sql, params = []) {
@@ -73,10 +74,52 @@ router.get('/taco', async (req, resp) => {
   }
 });
 
+/** Sugere dieta automática baseada na TMB do paciente usando TACO */
+router.get('/sugerir-dieta/:usuarioId', async (req, resp) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+    const rows = await query(`SELECT ${CAMPOS_USUARIO} FROM usuarios WHERE id = ?`, [usuarioId]);
+    if (!rows.length) {
+      return resp.status(404).json({ sucesso: false, erro: 'Usuário não encontrado' });
+    }
+    const usuario = rows[0];
+    const basal = calcularTaxaBasal(usuario);
+    if (!basal) {
+      return resp.status(400).json({ sucesso: false, erro: 'Dados insuficientes para calcular TMB' });
+    }
+
+    const totalCalorias = basal.caloriasDia;
+    const divisao = {
+      cafe: Math.round(totalCalorias * 0.25),
+      almoco: Math.round(totalCalorias * 0.40),
+      janta: Math.round(totalCalorias * 0.35),
+    };
+
+    const [cafe, almoco, janta] = await Promise.all([
+      montarRefeicao(MAPA_REFEICAO.cafe, divisao.cafe),
+      montarRefeicao(MAPA_REFEICAO.almoco, divisao.almoco),
+      montarRefeicao(MAPA_REFEICAO.janta, divisao.janta),
+    ]);
+
+    resp.json({
+      sucesso: true,
+      basal,
+      divisao,
+      sugestao: {
+        cafe: { texto: cafe.texto, calorias: cafe.calorias, itens: cafe.itens },
+        almoco: { texto: almoco.texto, calorias: almoco.calorias, itens: almoco.itens },
+        janta: { texto: janta.texto, calorias: janta.calorias, itens: janta.itens },
+      },
+    });
+  } catch (err) {
+    resp.status(500).json({ sucesso: false, erro: err.message });
+  }
+});
+
 router.put('/dieta/:usuarioId', async (req, resp) => {
   try {
     const usuarioId = req.params.usuarioId;
-    const { cafe, almoco, janta, cafe_calorias, almoco_calorias, janta_calorias } = req.body;
+    const { cafe, almoco, janta, cafe_calorias, almoco_calorias, janta_calorias, notificar } = req.body;
 
     const rows = await query('SELECT id FROM usuarios WHERE id = ?', [usuarioId]);
     if (!rows.length) {
@@ -88,11 +131,14 @@ router.put('/dieta/:usuarioId', async (req, resp) => {
       Number(almoco_calorias || 0) +
       Number(janta_calorias || 0);
 
-    const basal = calcularTaxaBasal(
-      (await query(`SELECT ${CAMPOS_USUARIO} FROM usuarios WHERE id = ?`, [usuarioId]))[0]
-    );
+    const usuario = (await query(`SELECT ${CAMPOS_USUARIO} FROM usuarios WHERE id = ?`, [usuarioId]))[0];
+    const basal = calcularTaxaBasal(usuario);
     if (basal?.tmb) {
-      await query('UPDATE usuarios SET taxa_basal = ? WHERE id = ?', [basal.tmb, usuarioId]);
+      try {
+        await query('UPDATE usuarios SET taxa_basal = ? WHERE id = ?', [basal.tmb, usuarioId]);
+      } catch (_) {
+        // coluna taxa_basal pode não existir ainda
+      }
     }
 
     const existente = await query('SELECT id FROM dietas WHERE usuario_id = ?', [usuarioId]);
@@ -115,8 +161,24 @@ router.put('/dieta/:usuarioId', async (req, resp) => {
       );
     }
 
+    let emailResult = null;
+    if (notificar && usuario.email) {
+      const dieta = { cafe, almoco, janta, cafe_calorias, almoco_calorias, janta_calorias, calorias_totais: total };
+      emailResult = await enviarDietaPorEmail({
+        para: usuario.email,
+        nome: usuario.nome,
+        dieta,
+        basal,
+      });
+    }
+
     const dieta = await query('SELECT * FROM dietas WHERE usuario_id = ?', [usuarioId]);
-    resp.json({ sucesso: true, dieta: dieta[0], mensagem: 'Dieta publicada para o paciente' });
+    resp.json({
+      sucesso: true,
+      dieta: dieta[0],
+      mensagem: 'Dieta publicada para o paciente',
+      email: emailResult,
+    });
   } catch (err) {
     resp.status(500).json({ sucesso: false, erro: err.message });
   }
