@@ -1,9 +1,34 @@
 import { useState } from "react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase";
+import { FcGoogle } from "react-icons/fc";
 
 function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
   const [name, setName] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  async function loginGoogle() {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      if (!user.email) {
+        alert("Não foi possível obter seu email do Google.");
+        return;
+      }
+      const res = await fetch(`http://localhost:3001/api/usuario/por-email/${encodeURIComponent(user.email)}`);
+      const dados = await res.json();
+      if (dados.sucesso) {
+        onLogin("usuario", dados.usuario);
+      } else {
+        alert(`Email ${user.email} não encontrado. Cadastre-se primeiro com esse email.`);
+      }
+    } catch (err) {
+      if (err.code !== "auth/popup-closed-by-user") {
+        alert("Erro ao entrar com Google: " + err.message);
+      }
+    }
+  }
 
   async function handlelogin(tipo) {
     if (senha.length < 8) {
@@ -77,15 +102,21 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
         <button type="button" className="btn btn-accent" onClick={() => handlelogin("admin")}>
           Profissional
         </button>
-        <button type="button" className="btn btn-secondary" onClick={onCadastrar}>
-          Cadastrar
-        </button>
         <button
           type="button"
           className="btn btn-secondary btn-recuperar"
           onClick={onRecuperarsenha}
         >
           Esqueceu a senha?
+        </button>
+      </div>
+
+      <div className="form-actions" style={{ display: "flex", gap: "0.5rem" }}>
+        <button type="button" className="btn btn-secondary" onClick={onCadastrar} style={{ flex: 1 }}>
+          Cadastrar
+        </button>
+        <button type="button" className="btn btn-google" onClick={loginGoogle} style={{ flex: 1 }}>
+          <FcGoogle size={20} /> Google
         </button>
       </div>
     </div>

@@ -106,6 +106,18 @@ router.get('/:id/dieta', (req, resp) => {
   });
 });
 
+router.get('/por-email/:email', async (req, resp) => {
+  const email = req.params.email;
+  const sql = `SELECT ${CAMPOS_PUBLICOS} FROM usuarios WHERE email = ?`;
+  db.query(sql, [email], (err, results) => {
+    if (err) return resp.status(500).json({ sucesso: false, erro: err.message });
+    if (!results.length) return resp.json({ sucesso: false, erro: 'Email não encontrado' });
+    const usuario = results[0];
+    const calculo_basal = calcularTaxaBasal(usuario);
+    resp.json({ sucesso: true, usuario, calculo_basal });
+  });
+});
+
 router.post('/recuperar-senha', async (req, resp) => {
   const { email, senha } = req.body;
 
