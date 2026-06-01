@@ -16,6 +16,7 @@
 
 
 const express = require('express')
+const path = require('path')
 const cors = require('cors')
 const rotasUsuario = require('./rotas/usuario')
 const rotasAdmin = require('./rotas/admin')
@@ -29,10 +30,14 @@ app.use('/api/usuario', rotasUsuario)
 app.use('/api/admin', rotasAdmin)
 app.use('/api/profissional', rotasProfissional)
 
-app.get('/', (req, resp) => {
-    resp.send('API rodando')
+const frontendBuild = path.join(__dirname, '..', 'frontend', 'nutri', 'build')
+app.use(express.static(frontendBuild))
+app.get('*', (req, resp) => {
+  if (req.path.startsWith('/api')) return
+  resp.sendFile(path.join(frontendBuild, 'index.html'))
 })
 
-app.listen(3001, () => {
-    console.log('Servidor na porta 3001')
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+    console.log(`Servidor na porta ${PORT}`)
 })

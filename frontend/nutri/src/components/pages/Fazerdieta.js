@@ -14,7 +14,7 @@ function Fazerdieta({ usuarioId }) {
 
     async function carregar() {
       try {
-        const res = await fetch(`http://localhost:3001/api/usuario/${usuarioId}/dieta`);
+        const res = await fetch(`/api/usuario/${usuarioId}/dieta`);
         const json = await res.json();
         if (json.sucesso) {
           setDados(json);

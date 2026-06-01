@@ -22,7 +22,7 @@ function Esqueceuasenha({ onVoltar }) {
     }
 
     try {
-      const resposta = await fetch("http://localhost:3001/api/usuario/recuperar-senha", {
+      const resposta = await fetch("/api/usuario/recuperar-senha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),

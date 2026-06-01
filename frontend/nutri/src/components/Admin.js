@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:3001/api/admin";
+const API = "/api/admin";
 
 function Admin({ onVoltar, profissional }) {
   const [usuarios, setUsuarios] = useState([]);

@@ -19,7 +19,7 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
 
   useEffect(() => {
     if (tipo !== "admin") {
-      fetch("http://localhost:3001/api/profissional")
+      fetch("/api/profissional")
         .then((r) => r.json())
         .then((d) => { if (d.sucesso) setProfissionais(d.profissionais); })
         .catch(() => {});
@@ -66,8 +66,8 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
     const alturaMetros = altura ? Number((Number(altura) / 100).toFixed(2)) : null;
 
     const url = tipo === "admin"
-      ? "http://localhost:3001/api/profissional/cadastro"
-      : "http://localhost:3001/api/usuario/cadastro";
+      ? "/api/profissional/cadastro"
+      : "/api/usuario/cadastro";
 
     const body = tipo === "admin"
       ? { nome, senha, email, telefone }

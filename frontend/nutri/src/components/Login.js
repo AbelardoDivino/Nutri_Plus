@@ -16,7 +16,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
         alert("Não foi possível obter seu email do Google.");
         return;
       }
-      const res = await fetch(`http://localhost:3001/api/usuario/por-email/${encodeURIComponent(user.email)}`);
+      const res = await fetch(`/api/usuario/por-email/${encodeURIComponent(user.email)}`);
       const dados = await res.json();
       if (dados.sucesso) {
         onLogin("usuario", dados.usuario);
@@ -37,8 +37,8 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
     }
 
     const url = tipo === "admin"
-      ? "http://localhost:3001/api/profissional/login"
-      : "http://localhost:3001/api/usuario/login";
+      ? "/api/profissional/login"
+      : "/api/usuario/login";
 
     try {
       const resposta = await fetch(url, {
