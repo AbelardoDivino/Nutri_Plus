@@ -33,7 +33,9 @@ app.use('/api/profissional', rotasProfissional)
 const frontendBuild = path.join(__dirname, '..', 'frontend', 'nutri', 'build')
 app.use(express.static(frontendBuild))
 app.get('*', (req, resp) => {
-  if (req.path.startsWith('/api')) return
+  if (req.path.startsWith('/api')) {
+    return resp.status(404).json({ erro: 'Rota não encontrada' })
+  }
   resp.sendFile(path.join(frontendBuild, 'index.html'))
 })
 
