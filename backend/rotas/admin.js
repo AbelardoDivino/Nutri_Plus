@@ -21,10 +21,41 @@ function query(sql, params = []) {
 
 router.get('/usuarios', async (req, resp) => {
   try {
+    const profissionalId = req.query.profissional_id;
+    let sql = `SELECT ${CAMPOS_USUARIO} FROM usuarios`;
+    let params = [];
+    if (profissionalId) {
+      sql += ' WHERE profissional_id = ?';
+      params.push(profissionalId);
+    }
+    sql += ' ORDER BY id DESC';
+    const usuarios = await query(sql, params);
+    resp.json({ sucesso: true, usuarios });
+  } catch (err) {
+    resp.status(500).json({ sucesso: false, erro: err.message });
+  }
+});
+
+router.get('/usuarios/nao-associados', async (req, resp) => {
+  try {
     const usuarios = await query(
-      `SELECT ${CAMPOS_USUARIO} FROM usuarios ORDER BY id DESC`
+      `SELECT ${CAMPOS_USUARIO} FROM usuarios WHERE profissional_id IS NULL ORDER BY id DESC`
     );
     resp.json({ sucesso: true, usuarios });
+  } catch (err) {
+    resp.status(500).json({ sucesso: false, erro: err.message });
+  }
+});
+
+router.put('/usuarios/:id/associar', async (req, resp) => {
+  try {
+    const usuarioId = req.params.id;
+    const { profissional_id } = req.body;
+    if (!profissional_id) {
+      return resp.status(400).json({ sucesso: false, erro: 'profissional_id é obrigatório' });
+    }
+    await query('UPDATE usuarios SET profissional_id = ? WHERE id = ?', [profissional_id, usuarioId]);
+    resp.json({ sucesso: true, mensagem: 'Paciente associado ao profissional' });
   } catch (err) {
     resp.status(500).json({ sucesso: false, erro: err.message });
   }

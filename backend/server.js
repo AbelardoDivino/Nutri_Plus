@@ -19,6 +19,7 @@ const express = require('express')
 const cors = require('cors')
 const rotasUsuario = require('./rotas/usuario')
 const rotasAdmin = require('./rotas/admin')
+const rotasProfissional = require('./rotas/profissional')
 
 const app = express()
 
@@ -26,6 +27,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/api/usuario', rotasUsuario)
 app.use('/api/admin', rotasAdmin)
+app.use('/api/profissional', rotasProfissional)
 
 app.get('/', (req, resp) => {
     resp.send('API rodando')

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Campousu from './components/Campousu';
 import Admin from './components/Admin';
 import Cadastrar from './components/Cadastrar';
+import EscolherCadastro from './components/EscolherCadastro';
 import Esqueceuasenha from './components/pages/Esqueceuasenha';
 import Sobre from './components/pages/Sobre';
 import { useState } from 'react';
@@ -28,18 +29,32 @@ function App() {
         {tela === 'login' && (
           <Login
             onLogin={handleLogin}
-            onCadastrar={() => setTela('cadastrar')}
+            onCadastrar={() => setTela('escolhercadastro')}
             onRecuperarsenha={() => setTela('esqueceuasenha')}
+          />
+        )}
+        {tela === 'escolhercadastro' && (
+          <EscolherCadastro
+            onVoltar={() => setTela('login')}
+            onCadastroUsuario={() => setTela('cadastrar')}
+            onCadastroAdmin={() => setTela('cadastroadmin')}
           />
         )}
         {tela === 'cadastrar' && (
           <Cadastrar
-            onVoltar={() => setTela('login')}
+            onVoltar={() => setTela('escolhercadastro')}
             onCadastrado={() => setTela('usuario')}
           />
         )}
+        {tela === 'cadastroadmin' && (
+          <Cadastrar
+            tipo="admin"
+            onVoltar={() => setTela('escolhercadastro')}
+            onCadastrado={() => setTela('admin')}
+          />
+        )}
         {tela === 'usuario' && <Campousu usuario={usuarioLogado} />}
-        {tela === 'admin' && <Admin onVoltar={() => setTela('login')} />}
+        {tela === 'admin' && <Admin profissional={usuarioLogado} onVoltar={() => setTela('login')} />}
         {tela === 'esqueceuasenha' && (
           <Esqueceuasenha onVoltar={() => setTela('login')} />
         )}

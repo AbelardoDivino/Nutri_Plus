@@ -36,8 +36,12 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
       return;
     }
 
+    const url = tipo === "admin"
+      ? "http://localhost:3001/api/profissional/login"
+      : "http://localhost:3001/api/usuario/login";
+
     try {
-      const resposta = await fetch("http://localhost:3001/api/usuario/login", {
+      const resposta = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome: name, senha: senha }),
@@ -46,7 +50,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
       const dados = await resposta.json();
 
       if (dados.sucesso) {
-        onLogin(tipo, dados.usuario);
+        onLogin(tipo, tipo === "admin" ? dados.profissional : dados.usuario);
       } else {
         alert(dados.erro || "Credenciais inválidas");
       }
@@ -99,9 +103,6 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
         <button type="button" className="btn btn-primary" onClick={() => handlelogin("usuario")}>
           Entrar
         </button>
-        <button type="button" className="btn btn-accent" onClick={() => handlelogin("admin")}>
-          Profissional
-        </button>
         <button
           type="button"
           className="btn btn-secondary btn-recuperar"
@@ -119,6 +120,12 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
           <FcGoogle size={20} /> Google
         </button>
       </div>
+
+      <p className="admin-login-link">
+        <button type="button" className="link-btn" onClick={() => handlelogin("admin")}>
+          Sou profissional
+        </button>
+      </p>
     </div>
   );
 }

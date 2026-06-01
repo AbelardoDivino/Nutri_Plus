@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 const API = "http://localhost:3001/api/admin";
 
-function Admin({ onVoltar }) {
+function Admin({ onVoltar, profissional }) {
   const [usuarios, setUsuarios] = useState([]);
+  const [naoAssociados, setNaoAssociados] = useState([]);
   const [selecionado, setSelecionado] = useState(null);
   const [detalhe, setDetalhe] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -11,6 +12,7 @@ function Admin({ onVoltar }) {
   const [salvando, setSalvando] = useState(false);
   const [notificar, setNotificar] = useState(true);
   const [sugerindo, setSugerindo] = useState(false);
+  const [associando, setAssociando] = useState(null);
 
   const [buscaTaco, setBuscaTaco] = useState("");
   const [alimentosTaco, setAlimentosTaco] = useState([]);
@@ -34,17 +36,40 @@ function Admin({ onVoltar }) {
     setCarregando(true);
     setErro("");
     try {
-      const res = await fetch(`${API}/usuarios`);
-      const dados = await res.json();
-      if (dados.sucesso) {
-        setUsuarios(dados.usuarios);
-      } else {
-        setErro(dados.erro || "Erro ao listar usuários");
-      }
+      const [resMeus, resLivres] = await Promise.all([
+        fetch(`${API}/usuarios?profissional_id=${profissional?.id}`),
+        fetch(`${API}/usuarios/nao-associados`),
+      ]);
+      const meus = await resMeus.json();
+      const livres = await resLivres.json();
+      if (meus.sucesso) setUsuarios(meus.usuarios);
+      if (livres.sucesso) setNaoAssociados(livres.usuarios);
     } catch {
       setErro("Servidor offline. Inicie o backend na porta 3001.");
     } finally {
       setCarregando(false);
+    }
+  }
+
+  async function associarPaciente(usuarioId) {
+    setAssociando(usuarioId);
+    setErro("");
+    try {
+      const res = await fetch(`${API}/usuarios/${usuarioId}/associar`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profissional_id: profissional?.id }),
+      });
+      const dados = await res.json();
+      if (dados.sucesso) {
+        await carregarUsuarios();
+      } else {
+        setErro(dados.erro);
+      }
+    } catch {
+      setErro("Erro ao associar paciente");
+    } finally {
+      setAssociando(null);
     }
   }
 
@@ -168,7 +193,7 @@ function Admin({ onVoltar }) {
 
   useEffect(() => {
     carregarUsuarios();
-  }, []);
+  }, [profissional?.id]);
 
   const u = detalhe?.usuario;
   const basal = detalhe?.calculo_basal;
@@ -177,19 +202,18 @@ function Admin({ onVoltar }) {
     <div className="form-card form-card--wide admin-panel">
       <h1 className="form-title">Painel do profissional</h1>
       <p className="form-subtitle">
-        Nutrição / educação física: consulte dados do paciente, use o TACO como referência e
-        monte a dieta manualmente.
+        {profissional ? `Bem-vindo, ${profissional.nome}` : "Nutrição / educação física"}
       </p>
 
       {erro && <p className="admin-erro">{erro}</p>}
 
       <div className="admin-grid">
         <section className="admin-lista">
-          <h3>Pacientes</h3>
+          <h3>Meus pacientes</h3>
           {carregando ? (
             <p>Carregando...</p>
           ) : usuarios.length === 0 ? (
-            <p>Nenhum paciente cadastrado.</p>
+            <p>Nenhum paciente vinculado a você.</p>
           ) : (
             <ul className="admin-usuarios">
               {usuarios.map((user) => (
@@ -205,6 +229,30 @@ function Admin({ onVoltar }) {
                 </li>
               ))}
             </ul>
+          )}
+
+          {naoAssociados.length > 0 && (
+            <>
+              <h3 style={{ marginTop: "1.5rem" }}>Pacientes disponíveis</h3>
+              <ul className="admin-usuarios">
+                {naoAssociados.map((user) => (
+                  <li key={user.id} className="admin-user-row">
+                    <span>
+                      <strong>{user.nome}</strong>
+                      <span>{user.email}</span>
+                    </span>
+                    <button
+                      type="button"
+                      className="btn-mini"
+                      disabled={associando === user.id}
+                      onClick={() => associarPaciente(user.id)}
+                    >
+                      {associando === user.id ? "..." : "Vincular"}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </section>
 

@@ -32,7 +32,7 @@ router.post('/login', async (req, resp) => {
 });
 
 router.post('/cadastro', async (req, resp) => {
-  const { nome, senha, email, telefone, altura, genero, sedentario, peso, idade } = req.body;
+  const { nome, senha, email, telefone, altura, genero, sedentario, peso, idade, profissional_id } = req.body;
 
   if (!nome || !senha || !email) {
     resp.json({ sucesso: false, erro: 'Preencha todos os campos obrigatórios' });
@@ -57,9 +57,9 @@ router.post('/cadastro', async (req, resp) => {
 
   const senhaHash = await bcrypt.hash(senha, 10);
 
-  const sql = `INSERT INTO usuarios (nome, senha, email, telefone, altura, genero, sedentario, peso, idade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO usuarios (nome, senha, email, telefone, altura, genero, sedentario, peso, idade, profissional_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  db.query(sql, [nome, senhaHash, email, telefone, altura, genero, sedentario, peso || null, idade], (err, result) => {
+  db.query(sql, [nome, senhaHash, email, telefone, altura, genero, sedentario, peso || null, idade, profissional_id || null], (err, result) => {
     if (err) {
       if (err.code === 'ER_DUP_ENTRY') {
         resp.json({ sucesso: false, erro: 'Nome ou email já cadastrado' });

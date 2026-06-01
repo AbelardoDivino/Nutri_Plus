@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pesobasal from "./pages/Pesobasal";
 
-function Cadastrar({ onVoltar, onCadastrado }) {
+function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
   const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -14,6 +14,17 @@ function Cadastrar({ onVoltar, onCadastrado }) {
   const [sedentario, setSedentario] = useState("Sim");
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
+  const [profissionais, setProfissionais] = useState([]);
+  const [profissionalId, setProfissionalId] = useState("");
+
+  useEffect(() => {
+    if (tipo !== "admin") {
+      fetch("http://localhost:3001/api/profissional")
+        .then((r) => r.json())
+        .then((d) => { if (d.sucesso) setProfissionais(d.profissionais); })
+        .catch(() => {});
+    }
+  }, [tipo]);
 
   async function handleCadastro() {
     if (nome.length < 10 || nome.length > 40) {
@@ -32,37 +43,41 @@ function Cadastrar({ onVoltar, onCadastrado }) {
       alert("Email inválido");
       return;
     }
-    if (!peso || Number(peso) <= 0) {
-      alert("Informe um peso válido");
-      return;
-    }
-    const alturaCm = Number(altura);
-    if (!alturaCm || alturaCm < 50 || alturaCm > 250) {
-      alert("Altura deve estar entre 50 e 250 cm");
-      return;
-    }
-    if (!idade || idade < 1 || idade > 120) {
-      alert("Idade deve estar entre 1 e 120 anos");
-      return;
+    if (tipo !== "admin") {
+      if (!peso || Number(peso) <= 0) {
+        alert("Informe um peso válido");
+        return;
+      }
+      const alturaCm = Number(altura);
+      if (!alturaCm || alturaCm < 50 || alturaCm > 250) {
+        alert("Altura deve estar entre 50 e 250 cm");
+        return;
+      }
+      if (!idade || idade < 1 || idade > 120) {
+        alert("Idade deve estar entre 1 e 120 anos");
+        return;
+      }
+      if (!profissionalId) {
+        alert("Selecione um profissional para acompanhar seu plano");
+        return;
+      }
     }
 
-    const alturaMetros = Number((alturaCm / 100).toFixed(2));
+    const alturaMetros = altura ? Number((Number(altura) / 100).toFixed(2)) : null;
+
+    const url = tipo === "admin"
+      ? "http://localhost:3001/api/profissional/cadastro"
+      : "http://localhost:3001/api/usuario/cadastro";
+
+    const body = tipo === "admin"
+      ? { nome, senha, email, telefone }
+      : { nome, senha, email, telefone, altura: alturaMetros, genero, sedentario, peso: Number(peso), idade: Number(idade), profissional_id: Number(profissionalId) };
 
     try {
-      const resposta = await fetch("http://localhost:3001/api/usuario/cadastro", {
+      const resposta = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome,
-          senha,
-          email,
-          telefone,
-          altura: alturaMetros,
-          genero,
-          sedentario,
-          peso: Number(peso),
-          idade: Number(idade),
-        }),
+        body: JSON.stringify(body),
       });
 
       const dados = await resposta.json();
@@ -96,19 +111,21 @@ function Cadastrar({ onVoltar, onCadastrado }) {
         />
       </div>
 
-      <section className="pesobasal-section" aria-label="Dados corporais">
-        <h3>Seus dados para o plano nutricional</h3>
-        <Pesobasal
-          peso={peso}
-          altura={altura}
-          genero={genero}
-          sedentario={sedentario}
-          onPeso={setPeso}
-          onAltura={setAltura}
-          onGenero={setGenero}
-          onSedentario={setSedentario}
-        />
-      </section>
+      {tipo !== "admin" && (
+        <section className="pesobasal-section" aria-label="Dados corporais">
+          <h3>Seus dados para o plano nutricional</h3>
+          <Pesobasal
+            peso={peso}
+            altura={altura}
+            genero={genero}
+            sedentario={sedentario}
+            onPeso={setPeso}
+            onAltura={setAltura}
+            onGenero={setGenero}
+            onSedentario={setSedentario}
+          />
+        </section>
+      )}
 
       <div className="form-group">
         <label htmlFor="cad-senha">Senha</label>
@@ -171,18 +188,38 @@ function Cadastrar({ onVoltar, onCadastrado }) {
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="cad-idade">Idade</label>
-        <input
-          id="cad-idade"
-          type="number"
-          min={1}
-          max={120}
-          placeholder="Ex: 25"
-          value={idade}
-          onChange={(e) => setIdade(e.target.value)}
-        />
-      </div>
+      {tipo !== "admin" && (
+        <>
+          <div className="form-group">
+            <label htmlFor="cad-idade">Idade</label>
+            <input
+              id="cad-idade"
+              type="number"
+              min={1}
+              max={120}
+              placeholder="Ex: 25"
+              value={idade}
+              onChange={(e) => setIdade(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cad-profissional">Escolha seu nutricionista / profissional</label>
+            <select
+              id="cad-profissional"
+              value={profissionalId}
+              onChange={(e) => setProfissionalId(e.target.value)}
+            >
+              <option value="">Selecione um profissional</option>
+              {profissionais.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+        </>
+      )}
 
       <div className="form-actions">
         <button type="button" className="btn btn-primary" onClick={handleCadastro}>
