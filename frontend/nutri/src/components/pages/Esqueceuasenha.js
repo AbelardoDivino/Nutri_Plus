@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Esqueceuasenha({ onVoltar }) {
   const [email, setEmail] = useState("");
@@ -66,7 +67,7 @@ function Esqueceuasenha({ onVoltar }) {
             onChange={(e) => setSenha(e.target.value)}
           />
           <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>
-            {mostrarSenha ? "🙈" : "👁️"}
+            {mostrarSenha ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </span>
         </div>
       </div>
@@ -85,7 +86,7 @@ function Esqueceuasenha({ onVoltar }) {
             className="toggle-password"
             onClick={() => setMostrarConfirmar(!mostrarConfirmar)}
           >
-            {mostrarConfirmar ? "🙈" : "👁️"}
+            {mostrarConfirmar ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </span>
         </div>
       </div>

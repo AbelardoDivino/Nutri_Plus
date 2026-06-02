@@ -193,6 +193,7 @@ function Admin({ onVoltar, profissional }) {
 
   useEffect(() => {
     carregarUsuarios();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profissional?.id]);
 
   const u = detalhe?.usuario;

@@ -6,6 +6,7 @@ import Campousu from './components/Campousu';
 import Admin from './components/Admin';
 import Cadastrar from './components/Cadastrar';
 import EscolherCadastro from './components/EscolherCadastro';
+import CompletarPerfil from './components/CompletarPerfil';
 import Esqueceuasenha from './components/pages/Esqueceuasenha';
 import Sobre from './components/pages/Sobre';
 import { useState } from 'react';
@@ -16,7 +17,11 @@ function App() {
 
   function handleLogin(tipo, usuario) {
     setUsuarioLogado(usuario || null);
-    setTela(tipo);
+    if (tipo === 'usuario' && usuario && !usuario.profissional_id) {
+      setTela('completarperfil');
+    } else {
+      setTela(tipo);
+    }
   }
 
   return (
@@ -51,6 +56,15 @@ function App() {
             tipo="admin"
             onVoltar={() => setTela('escolhercadastro')}
             onCadastrado={() => setTela('admin')}
+          />
+        )}
+        {tela === 'completarperfil' && (
+          <CompletarPerfil
+            usuario={usuarioLogado}
+            onCompletou={(userAtualizado) => {
+              setUsuarioLogado(userAtualizado);
+              setTela('usuario');
+            }}
           />
         )}
         {tela === 'usuario' && <Campousu usuario={usuarioLogado} />}

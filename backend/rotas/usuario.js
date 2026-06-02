@@ -143,4 +143,57 @@ router.post('/recuperar-senha', async (req, resp) => {
   });
 });
 
+router.put('/:id', async (req, resp) => {
+  const userId = req.params.id;
+  const { peso, altura, genero, sedentario, idade, profissional_id } = req.body;
+
+  const fields = [];
+  const values = [];
+
+  if (peso !== undefined) { fields.push('peso = ?'); values.push(peso); }
+  if (altura !== undefined) { fields.push('altura = ?'); values.push(altura); }
+  if (genero !== undefined) { fields.push('genero = ?'); values.push(genero); }
+  if (sedentario !== undefined) { fields.push('sedentario = ?'); values.push(sedentario); }
+  if (idade !== undefined) { fields.push('idade = ?'); values.push(idade); }
+  if (profissional_id !== undefined) { fields.push('profissional_id = ?'); values.push(profissional_id); }
+
+  if (!fields.length) {
+    return resp.json({ sucesso: false, erro: 'Nenhum campo para atualizar' });
+  }
+
+  values.push(userId);
+  const sql = `UPDATE usuarios SET ${fields.join(', ')} WHERE id = ?`;
+
+  db.query(sql, values, (err, result) => {
+    if (err) return resp.json({ sucesso: false, erro: err.message });
+    resp.json({ sucesso: true });
+  });
+});
+
+router.post('/cadastro-google', async (req, resp) => {
+  const { nome, email } = req.body;
+
+  if (!nome || !email || !email.includes('@')) {
+    return resp.json({ sucesso: false, erro: 'Nome e email são obrigatórios' });
+  }
+
+  const crypto = require('crypto');
+  const senhaGerada = 'google_' + crypto.randomBytes(16).toString('hex');
+  const senhaHash = await bcrypt.hash(senhaGerada, 10);
+
+  const sql = 'INSERT INTO usuarios (nome, senha, email) VALUES (?, ?, ?)';
+  db.query(sql, [nome, senhaHash, email], (err, result) => {
+    if (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        return resp.json({ sucesso: false, erro: 'Nome ou email já cadastrado' });
+      }
+      return resp.json({ sucesso: false, erro: err.message });
+    }
+    resp.json({
+      sucesso: true,
+      usuario: { id: result.insertId, nome, email }
+    });
+  });
+});
+
 module.exports = router;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
   const [name, setName] = useState("");
@@ -16,12 +17,29 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
         alert("Não foi possível obter seu email do Google.");
         return;
       }
+
       const res = await fetch(`/api/usuario/por-email/${encodeURIComponent(user.email)}`);
       const dados = await res.json();
+
       if (dados.sucesso) {
         onLogin("usuario", dados.usuario);
+        return;
+      }
+
+      const cadRes = await fetch("/api/usuario/cadastro-google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: user.displayName || user.email.split("@")[0],
+          email: user.email,
+        }),
+      });
+      const cadDados = await cadRes.json();
+
+      if (cadDados.sucesso) {
+        onLogin("usuario", cadDados.usuario);
       } else {
-        alert(`Email ${user.email} não encontrado. Cadastre-se primeiro com esse email.`);
+        alert("Erro ao criar conta: " + (cadDados.erro || "tente novamente"));
       }
     } catch (err) {
       if (err.code !== "auth/popup-closed-by-user") {
@@ -94,7 +112,7 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
             tabIndex={0}
             aria-label="Mostrar senha"
           >
-            {mostrarSenha ? "🙈" : "👁️"}
+            {mostrarSenha ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </span>
         </div>
       </div>
@@ -109,6 +127,13 @@ function Login({ onLogin, onCadastrar, onRecuperarsenha }) {
           onClick={onRecuperarsenha}
         >
           Esqueceu a senha?
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={onRecuperarsenha}
+        >
+          Recuperar email
         </button>
       </div>
 

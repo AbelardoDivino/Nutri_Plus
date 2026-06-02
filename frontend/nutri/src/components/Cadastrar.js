@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Pesobasal from "./pages/Pesobasal";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
   const [nome, setNome] = useState("");
@@ -140,7 +141,7 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
             onChange={(e) => setSenha(e.target.value)}
           />
           <span className="toggle-password" onClick={() => setMostrarSenha(!mostrarSenha)}>
-            {mostrarSenha ? "🙈" : "👁️"}
+            {mostrarSenha ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </span>
         </div>
       </div>
@@ -161,7 +162,7 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
             className="toggle-password"
             onClick={() => setMostrarConfirmar(!mostrarConfirmar)}
           >
-            {mostrarConfirmar ? "🙈" : "👁️"}
+            {mostrarConfirmar ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
           </span>
         </div>
       </div>

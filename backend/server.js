@@ -1,20 +1,3 @@
-// const express = require('express')
-// const rota = require('rota')
-
-// const app = express()
-// const db = require('./db/db')
-
-// app.use(rota())
-// app.use(express.json())
-
-// // rota teste
-
-// app.get('/',(req,resp)=>{
-//     resp.send('api rodando')
-// })
-
-
-
 const express = require('express')
 const path = require('path')
 const cors = require('cors')
@@ -32,7 +15,7 @@ app.use('/api/profissional', rotasProfissional)
 
 const frontendBuild = path.join(__dirname, '..', 'frontend', 'nutri', 'build')
 app.use(express.static(frontendBuild))
-app.get('*', (req, resp) => {
+app.get('{*caminho}', (req, resp) => {
   if (req.path.startsWith('/api')) {
     return resp.status(404).json({ erro: 'Rota não encontrada' })
   }

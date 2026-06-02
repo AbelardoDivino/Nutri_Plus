@@ -3,15 +3,12 @@ function Navbar({ onSobre }) {
     <nav className="navbar">
       <a href="/" className="navbar-logo">
         <img src="/imagens/imagenlogo.png" alt="Nutri+" />
+        <span className="navbar-brand">Nutri+</span>
       </a>
       <div className="navbar-links">
         <button type="button" onClick={onSobre}>
           Sobre
         </button>
-        <a href="#mais">Mais</a>
-        <a href="#entrar" className="nav-cta">
-          Entrar
-        </a>
       </div>
     </nav>
   );
