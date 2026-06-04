@@ -11,9 +11,14 @@ const config = process.env.DATABASE_URL
       database: process.env.DB_NAME || 'nutriplus'
     }
 
-const connection = mysql.createConnection(config)
+const pool = mysql.createPool({
+  ...config,
+  waitForConnections: true,
+  connectionLimit: 5,
+  queueLimit: 0,
+})
 
-connection.connect((err) => {
+pool.getConnection((err) => {
   if (err) {
     console.log('erro ao conectar MySQL:', err.message)
   } else {
@@ -21,4 +26,4 @@ connection.connect((err) => {
   }
 })
 
-module.exports = connection
+module.exports = pool
