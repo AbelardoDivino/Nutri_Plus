@@ -28,12 +28,12 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
   }, [tipo]);
 
   async function handleCadastro() {
-    if (nome.length < 10 || nome.length > 40) {
-      alert("Nome deve ter entre 10 e 40 caracteres");
+    if (!nome || nome.length < 3 || nome.length > 40) {
+      alert("Nome deve ter entre 3 e 40 caracteres");
       return;
     }
-    if (senha.length < 12 || senha.length > 60) {
-      alert("Senha deve ter entre 12 e 60 caracteres");
+    if (senha.length < 8 || senha.length > 60) {
+      alert("Senha deve ter entre 8 e 60 caracteres");
       return;
     }
     if (senha !== confirmarSenha) {
@@ -58,10 +58,6 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
         alert("Idade deve estar entre 1 e 120 anos");
         return;
       }
-      if (!profissionalId) {
-        alert("Selecione um profissional para acompanhar seu plano");
-        return;
-      }
     }
 
     const alturaMetros = altura ? Number((Number(altura) / 100).toFixed(2)) : null;
@@ -72,7 +68,7 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
 
     const body = tipo === "admin"
       ? { nome, senha, email, telefone }
-      : { nome, senha, email, telefone, altura: alturaMetros, genero, sedentario, peso: Number(peso), idade: Number(idade), profissional_id: Number(profissionalId) };
+      : { nome, senha, email, telefone, altura: alturaMetros, genero, sedentario, peso: Number(peso), idade: Number(idade), ...(profissionalId ? { profissional_id: Number(profissionalId) } : {}) };
 
     try {
       const resposta = await fetch(url, {
@@ -134,9 +130,9 @@ function Cadastrar({ onVoltar, onCadastrado, tipo = "usuario" }) {
           <input
             id="cad-senha"
             type={mostrarSenha ? "text" : "password"}
-            minLength={12}
+            minLength={8}
             maxLength={60}
-            placeholder="Mínimo 12 caracteres"
+            placeholder="Mínimo 8 caracteres"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
