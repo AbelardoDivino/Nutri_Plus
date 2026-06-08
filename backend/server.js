@@ -17,10 +17,8 @@ const db = require('./db/db')
 
 app.get('/api/health', (req, resp) => {
   const hasUrl = !!process.env.DATABASE_URL
-  const cfg = {
-    hasUrl,
-    host: hasUrl ? new URL(process.env.DATABASE_URL).hostname : (process.env.DB_HOST || 'localhost'),
-  }
+  const cfg = { hasUrl }
+  try { if (hasUrl) cfg.host = new URL(process.env.DATABASE_URL).hostname } catch {}
   db.query('SELECT 1 AS test', (err, results) => {
     if (err) return resp.json({ sucesso: false, erro: err.message, cfg })
     resp.json({ sucesso: true, db: 'ok', cfg })

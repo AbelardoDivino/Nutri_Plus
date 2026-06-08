@@ -1,8 +1,6 @@
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') })
-const mysql = require('mysql2/promise')
-
-let pool
+const mysql = require('mysql2')
 
 function buildConfig() {
   if (process.env.DATABASE_URL) {
@@ -27,26 +25,15 @@ function buildConfig() {
   }
 }
 
-async function getPool() {
-  if (!pool) {
-    pool = mysql.createPool(buildConfig())
-  }
-  return pool
-}
+const pool = mysql.createPool(buildConfig())
 
 module.exports = {
   query(sql, params, callback) {
-    getPool()
-      .then(p => p.query(sql, params))
-      .then(([results]) => callback(null, results))
-      .catch(err => {
-        if (err && err.message && err.message.includes('closed state')) {
-          pool = mysql.createPool(buildConfig())
-          return pool.query(sql, params)
-            .then(([results]) => callback(null, results))
-            .catch(err2 => callback(err2))
-        }
-        callback(err)
-      })
+    pool.query(sql, params, (err, results) => {
+      if (err && err.message && err.message.includes('closed state')) {
+        return pool.query(sql, params, callback)
+      }
+      callback(err, results)
+    })
   },
 }
