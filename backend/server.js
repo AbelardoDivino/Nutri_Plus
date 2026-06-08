@@ -13,6 +13,20 @@ app.use('/api/usuario', rotasUsuario)
 app.use('/api/admin', rotasAdmin)
 app.use('/api/profissional', rotasProfissional)
 
+const db = require('./db/db')
+
+app.get('/api/health', (req, resp) => {
+  const hasUrl = !!process.env.DATABASE_URL
+  const cfg = {
+    hasUrl,
+    host: hasUrl ? new URL(process.env.DATABASE_URL).hostname : (process.env.DB_HOST || 'localhost'),
+  }
+  db.query('SELECT 1 AS test', (err, results) => {
+    if (err) return resp.json({ sucesso: false, erro: err.message, cfg })
+    resp.json({ sucesso: true, db: 'ok', cfg })
+  })
+})
+
 const frontendBuild = path.join(__dirname, '..', 'frontend', 'nutri', 'build')
 app.use(express.static(frontendBuild))
 app.get('{*caminho}', (req, resp) => {

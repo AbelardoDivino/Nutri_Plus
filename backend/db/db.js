@@ -5,10 +5,11 @@ const mysql = require('mysql2')
 function buildConfig() {
   const base = {
     waitForConnections: true,
-    connectionLimit: 5,
+    connectionLimit: 2,
     queueLimit: 0,
     enableKeepAlive: true,
     keepAliveInitialDelay: 10000,
+    connectTimeout: 10000,
   }
 
   if (process.env.DATABASE_URL) {
@@ -29,15 +30,33 @@ function buildConfig() {
   return base
 }
 
-const pool = mysql.createPool(buildConfig())
+const cfg = buildConfig()
+console.log('DB config:', { host: cfg.host, port: cfg.port, user: cfg.user, database: cfg.database, ssl: !!cfg.ssl })
+
+const pool = mysql.createPool(cfg)
 
 pool.getConnection((err, conn) => {
   if (err) {
     console.log('erro ao conectar MySQL:', err.message)
+    console.log('erro completo:', JSON.stringify({ code: err.code, errno: err.errno, sqlState: err.sqlState, fatal: err.fatal }))
   } else {
     console.log('conectado ao MySQL')
-    conn.release()
+    conn.ping((pingErr) => {
+      if (pingErr) console.log('ping falhou:', pingErr.message)
+      else console.log('ping OK')
+      conn.release()
+    })
   }
+})
+
+pool.on('connection', (conn) => {
+  console.log('nova conexao MySQL criada')
+  conn.on('error', (err) => {
+    console.log('erro na conexao MySQL:', err.message)
+  })
+  conn.on('end', () => {
+    console.log('conexao MySQL encerrada')
+  })
 })
 
 pool.on('error', (err) => {
