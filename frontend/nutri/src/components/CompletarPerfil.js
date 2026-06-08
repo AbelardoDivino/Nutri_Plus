@@ -19,10 +19,6 @@ function CompletarPerfil({ usuario, onCompletou }) {
   }, []);
 
   async function handleSalvar() {
-    if (!profissionalId) {
-      alert("Selecione um profissional para acompanhar seu plano");
-      return;
-    }
     if (!peso || Number(peso) <= 0) {
       alert("Informe um peso válido");
       return;
@@ -43,7 +39,7 @@ function CompletarPerfil({ usuario, onCompletou }) {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          profissional_id: Number(profissionalId),
+          ...(profissionalId ? { profissional_id: Number(profissionalId) } : {}),
           peso: Number(peso),
           altura: Number((Number(altura) / 100).toFixed(2)),
           genero,
